@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Weatherville</h1>
+        <form method="POST">
+            <input type="text" name="location" placeholder="Enter city or zip code" required>
+            <button type="submit">Get Forecast</button>
+        </form>
+        <div class="weather-cards">
+            {% if weather_data %}
+                {% for day, data in weather_data.items() %}
+                    <div class="card">
+                        <h2 class="day">{{ data.day_of_week }}</h2>
+                        <i class="fas {{ data.icon }}"></i>
+                        <p class="date">{{ data.formatted_date }}</p>
+                        <p class="temp">{{ data.temperature }}°C</p>
+                        <p class="humidity">Humidity: {{ data.humidity }}%</p>
+                        <p class="wind">Wind Speed: {{ data.wind_speed }} m/s</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</body>
+</html>
