@@ -1,10 +1,8 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import requests
 from dotenv import load_dotenv
-import os
 import logging
 from datetime import datetime
 import uuid
@@ -17,13 +15,7 @@ load_dotenv()
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY')
-
-# Database setup
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')  # Use DATABASE_URL from Heroku
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key')
 
 # Flask-Login setup
 login_manager = LoginManager()
@@ -163,5 +155,4 @@ def save_to_supabase(location, forecast, user_id):
         raise e
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(debug=True)
